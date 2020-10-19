@@ -1,7 +1,8 @@
 const express = require("express");
 const path = require("path");
 
-const notesData = require("../../../db/db.json")
+let notesData = require("../../../db/db.json")
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -16,16 +17,16 @@ app.use(express.json());
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, "../../notes.html"));
 })
-
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, "../../index.html"));
 })
 
-// URL from database data
+// URL to database data
 app.get('/api/notes', (req, res) => {
     res.json(notesData)
 })
 
+// listener for server
 app.listen(PORT, () => {
     console.log(`listening at http://localhost:${PORT}`);
 })
