@@ -22,7 +22,7 @@ Create, save and delete notes on the fly with this simple note taker!
 | Technology | Description                                               | Link                               |
 | ---------- | --------------------------------------------------------- | ---------------------------------- |
 | Node.js    | JavaScript runtime built on Chrome's V8 JavaScript engine | https://nodejs.org/en/             |
-| Express    | minimalist web framework for node                         | https://expressjs.com/             |
+| Express    | Minimalist web framework for node                         | https://expressjs.com/             |
 | uuid       | For the creation of RFC4122 UUIDs                         | https://www.npmjs.com/package/uuid |
 
 ## Installation :hammer_and_wrench:
@@ -31,8 +31,8 @@ Head to https://vast-hamlet-48615.herokuapp.com/ to access the deployed app!
 
 ## Usage Demo
 
-![demo image](https://imgur.com/XdTlNQp)
-![demo image](https://imgur.com/Fhe0avC)
+![Imgur](https://imgur.com/XdTlNQp.jpg)
+![demo image](https://imgur.com/Fhe0avC.jpg)
 
 ## License ![License](https://img.shields.io/github/license/smcheah/Note-Taker)
 
