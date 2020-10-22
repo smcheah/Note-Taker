@@ -4,7 +4,7 @@
 const path = require("path");
 const util = require("util");
 const fs = require("fs");
-const { uuid } = require("uuidv4");
+const { v4: uuidv4 } = require("uuid");
 
 const asyncReadFile = util.promisify(fs.readFile);
 const asyncWriteFile = util.promisify(fs.writeFile);
@@ -12,7 +12,7 @@ const asyncWriteFile = util.promisify(fs.writeFile);
 const notes = "./db/db.json";
 
 module.exports = function (app) {
-    // html routes
+	// html routes
 	app.get("/notes", function (req, res) {
 		res.sendFile(path.join(__dirname, "../../notes.html"));
 	});
@@ -21,15 +21,14 @@ module.exports = function (app) {
 		res.sendFile(path.join(__dirname, "../../index.html"));
 	});
 
-    // api routes
+	// api routes
 	app.get("/api/notes", async function (req, res) {
 		try {
-            // reads the db and gets all saved notes as json
+			// reads the db and gets all saved notes as json
 			const data = await asyncReadFile(notes, "utf-8");
-			const parseNote = JSON.parse(data);
+			const parsed = JSON.parse(data);
 
-            res.json(parseNote);
-            
+			res.json(parsed);
 		} catch (err) {
 			console.log(err);
 		}
@@ -37,17 +36,19 @@ module.exports = function (app) {
 
 	app.post("/api/notes", async function (req, res) {
 		try {
-            // receives note to save on req.body, adds it to the db file, returns new note to client
 			const data = await asyncReadFile(notes, "utf-8");
-			const id = uuid();
-            req.body.id = id;
-            
-			const parseNote = JSON.parse(data);
-			parseNote.push(req.body);
 
-			await asyncWriteFile(notes, JSON.stringify(parseNote, null, 2));
-            res.json(req.body);
-            
+			// assigns an id to req body
+			const id = uuidv4();
+			req.body.id = id;
+
+			// adds db data to the req body
+			const parsed = JSON.parse(data);
+			parsed.push(req.body);
+
+			// writes notes to db
+			await asyncWriteFile(notes, JSON.stringify(parsed, null, 2));
+			res.json(req.body);
 		} catch (err) {
 			console.log(err);
 		}
@@ -55,10 +56,19 @@ module.exports = function (app) {
 
 	app.delete("/api/notes/:id", async function (req, res) {
 		try {
-			
+			// reads the current db notes
+			const data = await asyncReadFile(notes, "utf-8");
+			const parsed = JSON.parse(data);
 
+			// removes current element by id
+			parsed.forEach((element) => {
+				if (element.id === req.params.id) {
+					parsed.splice(parsed.indexOf(element));
+				}
+			});
 
-            
+			await asyncWriteFile(notes, JSON.stringify(parsed, null, 2));
+			res.json(req.body);
 		} catch (err) {
 			console.log(err);
 		}
